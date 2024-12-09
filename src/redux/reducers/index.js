@@ -9,7 +9,7 @@
 // si comincia col creare uno stato iniziale (default) per il primo avvio dell'applicazione:
 
 const initialState = {
-  main: {
+  favorites: {
     companies: []
   }
 };
@@ -19,9 +19,22 @@ const mainReducer = (state = initialState, action) => {
     case "ADD_TO_FAVORITE":
       return {
         ...state,
-        main: {
-          ...state.main,
-          companies: [...state.main.companies, action.payload]
+        favorites: {
+          ...state.favorites,
+          companies: [...state.favorites.companies, action.payload]
+        }
+      };
+    case "REMOVE_FROM_FAVORITES":
+      return {
+        ...state,
+        favorites: {
+          ...state.favorites,
+          // content: state.cart.content.slice(0, action.payload).concat(state.cart.slice(action.payload + 1)) // ✅
+          // content: [...state.cart.content.slice(0, action.payload), ...state.cart.content.slice(action.payload + 1)] // ✅
+          companies: state.favorites.companies.filter(
+            (_, i) => i !== action.payload
+          ) // ✅ filter è un altro metodo che non muta l'array originale e ritorna
+          // un nuovo array, perfetto per quello che serve a noi
         }
       };
 
